@@ -1,7 +1,7 @@
-package moonlit.chill.pay.service;
+package moonlit.chill.ownpay.service;
 
-import moonlit.chill.pay.vo.PayResult;
-import moonlit.chill.pay.vo.TradeParam;
+import moonlit.chill.ownpay.vo.PayResult;
+import moonlit.chill.ownpay.vo.TradeParam;
 
 /**
  * @author AnGao

@@ -1,4 +1,4 @@
-package moonlit.chill.pay.vo;
+package moonlit.chill.ownpay.vo;
 
 import lombok.Getter;
 

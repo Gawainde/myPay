@@ -1,8 +1,8 @@
-package moonlit.chill.pay.service.impl;
+package moonlit.chill.ownpay.service.impl;
 
-import moonlit.chill.pay.service.PayService;
-import moonlit.chill.pay.vo.PayResult;
-import moonlit.chill.pay.vo.TradeParam;
+import moonlit.chill.ownpay.service.PayService;
+import moonlit.chill.ownpay.vo.PayResult;
+import moonlit.chill.ownpay.vo.TradeParam;
 import org.springframework.stereotype.Service;
 
 /**

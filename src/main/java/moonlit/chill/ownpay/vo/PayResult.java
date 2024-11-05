@@ -1,8 +1,8 @@
-package moonlit.chill.pay.vo;
+package moonlit.chill.ownpay.vo;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import moonlit.chill.pay.constants.TradeResultCode;
+import moonlit.chill.ownpay.constants.TradeResultCode;
 
 import java.io.Serializable;
 

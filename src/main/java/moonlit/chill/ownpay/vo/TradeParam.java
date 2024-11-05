@@ -1,4 +1,4 @@
-package moonlit.chill.pay.vo;
+package moonlit.chill.ownpay.vo;
 
 import lombok.Data;
 
@@ -16,7 +16,7 @@ public class TradeParam {
 
     /**
      * 支付方式
-     * {@link moonlit.chill.pay.constants.PayType}
+     * {@link moonlit.chill.ownpay.constants.PayType}
      * @date 2024/11/5
      */
     @NotEmpty(message = "支付方式不能为空")
@@ -24,7 +24,7 @@ public class TradeParam {
 
     /**
      * 支付渠道
-     * {@link moonlit.chill.pay.constants.PayChannel}
+     * {@link moonlit.chill.ownpay.constants.PayChannel}
      * @date 2024/11/5
      */
     @NotEmpty(message = "支付渠道不能为空")

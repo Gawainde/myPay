@@ -1,4 +1,4 @@
-package moonlit.chill.pay.constants;
+package moonlit.chill.ownpay.constants;
 
 /**
  * @author AnGao

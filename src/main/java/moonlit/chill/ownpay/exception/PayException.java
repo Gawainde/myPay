@@ -1,4 +1,4 @@
-package moonlit.chill.pay.exception;
+package moonlit.chill.ownpay.exception;
 
 import cn.hutool.http.HttpStatus;
 import lombok.Getter;

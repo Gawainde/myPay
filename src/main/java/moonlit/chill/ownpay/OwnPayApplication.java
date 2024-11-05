@@ -1,4 +1,4 @@
-package moonlit.chill.pay;
+package moonlit.chill.ownpay;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
