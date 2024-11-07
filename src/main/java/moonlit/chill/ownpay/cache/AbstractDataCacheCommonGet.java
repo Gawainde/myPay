@@ -17,27 +17,6 @@ public class AbstractDataCacheCommonGet<E> {
 
     protected Map<String, E> memoryCacheMap = new ConcurrentSkipListMap<>();
 
-    @SuppressWarnings("unchecked")
-    public E getCacheData(String key) {
-        E cacheData = memoryCacheMap.get(key);
-        if (cacheData == null) {
-            Class<E> tClass = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            String className = tClass.getSimpleName();
-            String result = String.format("%s为空，key:%s", className, key);
-            log.error(result);
-            throw new RuntimeException(result);
-        }
-        return cacheData;
-    }
-
-    public boolean containsKey(String key) {
-        return memoryCacheMap.containsKey(key);
-    }
-
-    public Map<String, E> getMemoryCacheMapUser() {
-        return memoryCacheMap;
-    }
-
     //获取set1和set2的交集
     public Set<String> getMixSet(Set<String> set1, Set<String> set2) {
         Set<String> result = new HashSet<>(set1);
