@@ -20,4 +20,10 @@ public interface PayStrategySuffix {
 
     /** 下载账单 */
     String BILL = "-B";
+
+    String PC = "-" + PayChannel.PC;
+
+    String MINI = "-" + PayChannel.MINI;
+
+    String CODE = "-" + PayChannel.CODE;
 }

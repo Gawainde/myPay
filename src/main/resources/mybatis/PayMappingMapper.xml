@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="moonlit.chill.ownpay.mapper.TradeMappingMapper">
+
+    <resultMap type="moonlit.chill.ownpay.vo.TradeMappings" id="TradeMappingResult">
+        <result property="id"    column="id"    />
+        <result property="fieldName"    column="field_name"    />
+        <result property="fieldValue"    column="field_value"    />
+        <result property="code"    column="code"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payChannel"    column="pay_channel"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <select id="selectTradeMappings" resultMap="TradeMappingResult">
+        select * from trade_mappings
+    </select>
+</mapper>

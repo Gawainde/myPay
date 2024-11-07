@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @Slf4j
-public class PayResult<T> implements Serializable {
+public class TradeResult<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,6 +32,9 @@ public class PayResult<T> implements Serializable {
 
     /** 是否需要记录支付流水 默认是 */
     private boolean needFlow = Boolean.TRUE;
+
+    /** 该支付方式是否支持查询 默认是 */
+    private boolean needSearch = Boolean.TRUE;
 
     public void error(String message, Integer code) {
         this.message = message;

@@ -14,6 +14,9 @@ import java.util.Map;
 @Data
 public class TradeParam {
 
+    /** 订单ID */
+    private Long docId;
+
     /**
      * 支付方式
      * {@link moonlit.chill.ownpay.constants.PayType}

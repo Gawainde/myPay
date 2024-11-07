@@ -1,6 +1,6 @@
 package moonlit.chill.ownpay.service;
 
-import moonlit.chill.ownpay.vo.PayResult;
+import moonlit.chill.ownpay.vo.TradeResult;
 import moonlit.chill.ownpay.vo.TradeParam;
 
 /**
@@ -9,5 +9,5 @@ import moonlit.chill.ownpay.vo.TradeParam;
  */
 public interface PayService {
 
-    <T extends TradeParam> PayResult<?> pay(T param);
+    <T extends TradeParam> TradeResult<?> pay(T param);
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="moonlit.chill.ownpay.mapper.TradeConfigMapper">
+
+    <resultMap type="moonlit.chill.ownpay.vo.TradeConfig" id="PayConfigResult">
+        <result property="id" column="id"/>
+        <result property="payType" column="pay_type"/>
+        <result property="appId" column="app_id"/>
+        <result property="uId" column="u_id"/>
+        <result property="privateKey" column="private_key"/>
+        <result property="publicKey" column="public_key"/>
+        <result property="notifyUrl" column="notify_url"/>
+        <result property="returnUrl" column="return_url"/>
+        <result property="code" column="code"/>
+        <result property="remark" column="remark"/>
+        <result property="downPath" column="down_path"/>
+        <result property="status" column="status"/>
+        <result property="miniAppId" column="mini_app_id"/>
+        <result property="appAuthToken" column="app_auth_token"/>
+        <result property="key" column="key"/>
+    </resultMap>
+
+    <select id="getTradeConfig" resultType="moonlit.chill.ownpay.vo.TradeConfig">
+        select tc.*,
+               JSON_ARRAYAGG(JSON_OBJECT('certFileContent', t.cert_file_content , 'certName', t.cert_name)) as certs
+        from trade_config as tc
+        left join trade_cert as t on tc.code = t.config_code
+        where tc.status = 1
+        group by tc.id
+    </select>
+    <select id="selectByPayType" resultType="moonlit.chill.ownpay.vo.TradeConfig">
+        select tc.*,
+               JSON_ARRAYAGG(JSON_OBJECT('certFileContent', t.cert_file_content , 'certName', t.cert_name)) as certs
+        from trade_config as tc
+        left join trade_cert as t on tc.code = t.config_code
+        where tc.status = 1
+          and tc.pay_type = #{payType}
+        group by tc.id
+    </select>
+</mapper>
