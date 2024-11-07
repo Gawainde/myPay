@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * @author AnGao
+ * @author Gawaind
  * @date 2024/4/15 15:06
  */
 public interface PayStrategy {

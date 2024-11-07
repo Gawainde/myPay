@@ -3,17 +3,17 @@ package moonlit.chill.ownpay.service;
 import moonlit.chill.ownpay.vo.TradeParam;
 
 /**
- * @author AnGao
+ * @author Gawaind
  * @date 2024/11/5 16:27
  */
-public interface JudgeParamService {
+public interface ParamHandlerService {
 
     /**
      * 参数校验
      *
      * @param param param
-     * @author AnGao
+     * @author Gawaind
      * @date 2024/11/5
      */
-    default void judgeParam(Class<? extends TradeParam> param) {}
+    default <T extends TradeParam> void paramHandler(T param) {}
 }

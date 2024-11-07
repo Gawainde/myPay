@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * 支付查询策略
- * @author AnGao
+ * @author Gawaind
  * @date 2024/11/5 16:02
  */
 @Data

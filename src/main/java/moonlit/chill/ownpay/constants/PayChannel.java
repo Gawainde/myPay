@@ -2,7 +2,7 @@ package moonlit.chill.ownpay.constants;
 
 /**
  * 支付渠道
- * @author AnGao
+ * @author Gawaind
  * @date 2024/11/5 16:00
  */
 public interface PayChannel {

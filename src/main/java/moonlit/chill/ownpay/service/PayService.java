@@ -4,7 +4,7 @@ import moonlit.chill.ownpay.vo.PayResult;
 import moonlit.chill.ownpay.vo.TradeParam;
 
 /**
- * @author AnGao
+ * @author Gawaind
  * @date 2024/11/5 16:24
  */
 public interface PayService {

@@ -1,7 +1,7 @@
 package moonlit.chill.ownpay.constants;
 
 /**
- * @author AnGao
+ * @author Gawaind
  * @date 2024/11/5 16:07
  */
 public interface PayStrategySuffix {

@@ -7,7 +7,7 @@ import moonlit.chill.ownpay.constants.TradeResultCode;
 import java.io.Serializable;
 
 /**
- * @author AnGao
+ * @author Gawaind
  * @date 2024/11/5 16:32
  */
 @Data
