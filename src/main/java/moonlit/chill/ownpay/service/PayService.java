@@ -9,5 +9,5 @@ import moonlit.chill.ownpay.vo.TradeParam;
  */
 public interface PayService {
 
-    <T extends TradeParam> TradeResult<?> pay(T param);
+    <T extends TradeParam> String pay(T param);
 }

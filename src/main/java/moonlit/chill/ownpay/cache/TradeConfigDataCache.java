@@ -32,7 +32,7 @@ public class TradeConfigDataCache extends AbstractDataCacheCommonGet<TradeConfig
         return memoryCacheMap.get(code);
     }
 
-    public List<TradeConfig> getPayConfigByPayType(String payType){
+    public List<TradeConfig> getTradeConfigByPayType(String payType){
         Map<String, TradeConfig> map = memoryCacheMap;
         List<TradeConfig> list = new ArrayList<>();
         for (TradeConfig value : map.values()) {

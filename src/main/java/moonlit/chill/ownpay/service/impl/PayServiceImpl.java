@@ -1,8 +1,10 @@
 package moonlit.chill.ownpay.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import moonlit.chill.ownpay.cache.TradeConfigDataCache;
+import moonlit.chill.ownpay.cache.TradeMappingsDataCache;
 import moonlit.chill.ownpay.cache.WaitingPayCache;
 import moonlit.chill.ownpay.config.PayFactory;
 import moonlit.chill.ownpay.constants.TradeResultCode;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Gawaind
@@ -31,32 +35,48 @@ public class PayServiceImpl implements PayService {
     private PayFactory payFactory;
 
     @Autowired
-    private TradeConfigDataCache payConfigDataCache;
+    private TradeConfigDataCache tradeConfigDataCache;
+
+    @Autowired
+    private TradeMappingsDataCache tradeMappingsDataCache;
 
     @Autowired
     private WaitingPayCache waitingPayCache;
 
     @Override
-    public <T extends TradeParam> TradeResult<?> pay(@Validated T param) {
+    public <T extends TradeParam> String pay(@Validated T param) {
         log.info("发起支付入参:{}", JSONUtil.toJsonStr(param));
         TradeResult<?> result = new TradeResult<>();
         try {
             paramHandler(param);
             PayStrategy payStrategy = payFactory.getPayStrategy(param.getPayType() + "-" + param.getPayChannel());
             if (payStrategy != null){
+                //后续根据具体订单实体 获取code
+                Object o = new Object();
+                String code = tradeMappingsDataCache.getCode(o, param.getPayType(), param.getPayChannel());
+                if (StrUtil.isEmpty(code)){
+                    log.error("支付获取code为null");
+                    throw new PayException("发起支付异常，请联系管理员");
+                }
+                tradeConfigDataCache.setCode(code);
                 log.info("调用支付入参:{}", JSONUtil.toJsonStr(result));
                 result = payStrategy.payMethod(param);
                 log.info("发起支付返回:{}", JSONUtil.toJsonStr(param));
                 if (result.isSuccess() || result.getCode().equals(TradeResultCode.PAY_USER_PAYING)){
                     initiatePaySuccessHandler(result, param);
+                    return result.isSuccess() ? result.getTradeResult().toString() : "";
+                } else {
+                    throw new PayException(result.getMessage());
                 }
+            } else {
+                log.error("支付获取payStrategy为null");
+                throw new PayException("发起支付异常，请联系管理员");
             }
         } catch (Exception e) {
-            result.errorWithException(e.getMessage(), TradeResultCode.PAY_ERROR_CODE, e);
+            throw new PayException(e.getMessage());
         } finally {
-            payConfigDataCache.remove();
+            tradeConfigDataCache.remove();
         }
-        return result;
     }
 
     private <T extends TradeParam> void initiatePaySuccessHandler(TradeResult<?> result, T param) {
@@ -75,6 +95,9 @@ public class PayServiceImpl implements PayService {
         if (param.getTotalAmount().compareTo(BigDecimal.ZERO) <= 0){
             throw new PayException("支付金额不能小于0");
         }
+        Map<String, String> map = new HashMap<>();
+        map.put("payChannel", param.getPayChannel());
+        param.setAdditionalInfo(map);
         //TODO 参数校验
     }
 }

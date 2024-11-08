@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +40,8 @@ public class TradeMappingsDataCache extends AbstractDataCacheCommonGet<List<Trad
             }
             Map<String, List<TradeMappings>> map = this.memoryCacheMap;
             String key = payType + "-" + payChannel;
-            List<TradeMappings> list = map.get(key);
+            //根据优先级顺序进行优先匹配
+            List<TradeMappings> list = map.get(key).stream().sorted(Comparator.comparingInt(TradeMappings::getPriorities)).collect(Collectors.toList());
             for (TradeMappings payMapping : list) {
                 String fieldName = payMapping.getFieldName();
                 String fieldValue = payMapping.getFieldValue();

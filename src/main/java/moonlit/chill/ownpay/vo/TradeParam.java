@@ -15,7 +15,8 @@ import java.util.Map;
 public class TradeParam {
 
     /** 订单ID */
-    private Long docId;
+    @NotEmpty(message = "订单ID不能为空")
+    private String docId;
 
     /**
      * 支付方式
@@ -23,7 +24,7 @@ public class TradeParam {
      * @date 2024/11/5
      */
     @NotEmpty(message = "支付方式不能为空")
-    private Integer payType;
+    private String payType;
 
     /**
      * 支付渠道
@@ -31,7 +32,7 @@ public class TradeParam {
      * @date 2024/11/5
      */
     @NotEmpty(message = "支付渠道不能为空")
-    private Integer payChannel;
+    private String payChannel;
 
     /** 支付金额 */
     private BigDecimal totalAmount;

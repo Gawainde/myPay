@@ -1,4 +1,4 @@
-package moonlit.chill.ownpay.service.impl;
+package moonlit.chill.ownpay.service.impl.config;
 
 import lombok.extern.slf4j.Slf4j;
 import moonlit.chill.ownpay.mapper.TradeMappingMapper;
