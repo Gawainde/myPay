@@ -68,6 +68,37 @@ public class TradeUtil {
                 map.put(config.getCode(), certificateConfig);
             }
         } catch (Exception e) {
+            log.error("生成微信配置异常");
+            throw new RuntimeException(e.getMessage());
+        }
+        return map;
+    }
+
+    @Bean("aliConfig")
+    public Map<String, Object> getAliConfigMap() {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            List<TradeConfig> list = tradeConfigDataCache.getTradeConfigByPayType(PayType.ALI);
+            if (list.isEmpty()) {
+                log.error("生成支付宝证书获取TradeConfig为空");
+                throw new RuntimeException("生成支付宝证书失败");
+            }
+            for (TradeConfig config : list) {
+                String pre = System.getProperty("user.dir") + SEPARATOR + "aliCert" + SEPARATOR + config.getUId() + SEPARATOR;
+                List<TradeCert> certs = config.getCerts();
+                for (TradeCert cert : certs) {
+                    String certPath = pre + cert.getCertName();
+                    if (!FileUtil.exist(certPath)) {
+                        File file = FileUtil.touch(certPath);
+                        file = FileUtil.writeUtf8String(cert.getCertFileContent(), file);
+                        if (!FileUtil.exist(file)) {
+                            throw new RuntimeException(String.format("生成支付宝%s证书失败", cert.getCertName()));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("生成支付宝配置异常");
             throw new RuntimeException(e.getMessage());
         }
         return map;
