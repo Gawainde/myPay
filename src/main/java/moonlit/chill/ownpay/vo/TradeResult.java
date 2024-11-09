@@ -42,10 +42,10 @@ public class TradeResult<T> implements Serializable {
         this.isSuccess = Boolean.FALSE;
     }
 
-    public void success(String message) {
-        this.message = message;
+    public void success(T tradeResult) {
         this.code = TradeResultCode.PAY_SUCCESS_CODE;
         this.isSuccess = Boolean.TRUE;
+        this.tradeResult = tradeResult;
     }
 
     public void errorWithException(String message, Integer code, Exception e) {
