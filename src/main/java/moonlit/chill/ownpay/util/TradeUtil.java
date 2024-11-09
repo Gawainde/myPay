@@ -1,6 +1,8 @@
 package moonlit.chill.ownpay.util;
 
 import cn.hutool.core.io.FileUtil;
+import com.alipay.api.CertAlipayRequest;
+import com.alipay.api.DefaultAlipayClient;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import lombok.extern.slf4j.Slf4j;
 import moonlit.chill.ownpay.cache.TradeConfigDataCache;
@@ -33,6 +35,8 @@ public class TradeUtil {
     private TradeConfigDataCache tradeConfigDataCache;
 
     private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
+
+    private static final String SERVER_URL = "https://openapi.alipay.com/gateway.do";
 
     @Bean("wxConfig")
     public Map<String, Object> getWxConfigMap() {
@@ -86,6 +90,7 @@ public class TradeUtil {
             for (TradeConfig config : list) {
                 String pre = System.getProperty("user.dir") + SEPARATOR + "aliCert" + SEPARATOR + config.getUId() + SEPARATOR;
                 List<TradeCert> certs = config.getCerts();
+                String appCertPath = null, aliPayRootCertPath = null, aliPayCertPath = null;
                 for (TradeCert cert : certs) {
                     String certPath = pre + cert.getCertName();
                     if (!FileUtil.exist(certPath)) {
@@ -94,8 +99,31 @@ public class TradeUtil {
                         if (!FileUtil.exist(file)) {
                             throw new RuntimeException(String.format("生成支付宝%s证书失败", cert.getCertName()));
                         }
+                        switch (cert.getCertName()) {
+                            case "appCertPublicKey.crt":
+                                appCertPath = certPath;
+                                break;
+                            case "alipayCertPublicKey.crt":
+                                aliPayCertPath = certPath;
+                                break;
+                            case "alipayRootCert.crt":
+                                aliPayRootCertPath = certPath;
+                                break;
+                        }
                     }
                 }
+                CertAlipayRequest certAlipayRequest = new CertAlipayRequest();
+                certAlipayRequest.setServerUrl(SERVER_URL);
+                certAlipayRequest.setAppId(config.getAppId());
+                certAlipayRequest.setPrivateKey(config.getPrivateKey());
+                certAlipayRequest.setFormat("json");
+                certAlipayRequest.setCharset("utf-8");
+                certAlipayRequest.setSignType("RSA2");
+                certAlipayRequest.setCertPath(appCertPath);
+                certAlipayRequest.setAlipayPublicCertPath(aliPayCertPath);
+                certAlipayRequest.setRootCertPath(aliPayRootCertPath);
+                map.put(config.getCode(), new DefaultAlipayClient(certAlipayRequest));
+                map.put(config.getCode() + "_aliPayCertPath", aliPayCertPath);
             }
         } catch (Exception e) {
             log.error("生成支付宝配置异常");
