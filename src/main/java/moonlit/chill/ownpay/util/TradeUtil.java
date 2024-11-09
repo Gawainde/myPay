@@ -50,7 +50,6 @@ public class TradeUtil {
             for (TradeConfig config : list) {
                 String pre = System.getProperty("user.dir") + SEPARATOR + "wxCert" + SEPARATOR + config.getUId() + SEPARATOR;
                 List<TradeCert> certs = config.getCerts();
-                String certFilePath = pre + "apiclient_cert.pem";
                 for (TradeCert cert : certs) {
                     String certPath = pre + cert.getCertName();
                     if (!FileUtil.exist(certPath)) {
@@ -66,7 +65,7 @@ public class TradeUtil {
                 RSAAutoCertificateConfig certificateConfig = new RSAAutoCertificateConfig.Builder()
                         .merchantId(config.getUId())
                         .privateKeyFromPath(map.get(config.getCode() + "_apiclient_key.pem").toString())
-                        .merchantSerialNumber(WxCertUtil.getCertificateSerialNumber(certFilePath))
+                        .merchantSerialNumber(WxCertUtil.getCertificateSerialNumber( pre + "apiclient_cert.pem"))
                         .apiV3Key(config.getKey())
                         .build();
                 map.put(config.getCode(), certificateConfig);
@@ -90,7 +89,6 @@ public class TradeUtil {
             for (TradeConfig config : list) {
                 String pre = System.getProperty("user.dir") + SEPARATOR + "aliCert" + SEPARATOR + config.getUId() + SEPARATOR;
                 List<TradeCert> certs = config.getCerts();
-                String appCertPath = null, aliPayRootCertPath = null, aliPayCertPath = null;
                 for (TradeCert cert : certs) {
                     String certPath = pre + cert.getCertName();
                     if (!FileUtil.exist(certPath)) {
@@ -98,17 +96,6 @@ public class TradeUtil {
                         file = FileUtil.writeUtf8String(cert.getCertFileContent(), file);
                         if (!FileUtil.exist(file)) {
                             throw new RuntimeException(String.format("生成支付宝%s证书失败", cert.getCertName()));
-                        }
-                        switch (cert.getCertName()) {
-                            case "appCertPublicKey.crt":
-                                appCertPath = certPath;
-                                break;
-                            case "alipayCertPublicKey.crt":
-                                aliPayCertPath = certPath;
-                                break;
-                            case "alipayRootCert.crt":
-                                aliPayRootCertPath = certPath;
-                                break;
                         }
                     }
                 }
@@ -119,11 +106,11 @@ public class TradeUtil {
                 certAlipayRequest.setFormat("json");
                 certAlipayRequest.setCharset("utf-8");
                 certAlipayRequest.setSignType("RSA2");
-                certAlipayRequest.setCertPath(appCertPath);
-                certAlipayRequest.setAlipayPublicCertPath(aliPayCertPath);
-                certAlipayRequest.setRootCertPath(aliPayRootCertPath);
+                certAlipayRequest.setCertPath(pre + "appCertPublicKey.crt");
+                certAlipayRequest.setAlipayPublicCertPath(pre + "aliCertPublicKey.crt");
+                certAlipayRequest.setRootCertPath(pre + "alipayRootCert.crt");
                 map.put(config.getCode(), new DefaultAlipayClient(certAlipayRequest));
-                map.put(config.getCode() + "_aliPayCertPath", aliPayCertPath);
+                map.put(config.getCode() + "_aliPayCertPath", pre + "aliCertPublicKey.crt");
             }
         } catch (Exception e) {
             log.error("生成支付宝配置异常");
