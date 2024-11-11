@@ -3,6 +3,8 @@ package moonlit.chill.ownpay.service.impl;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
+import moonlit.chill.ownpay.async.AsyncFactory;
+import moonlit.chill.ownpay.async.AsyncFactoryManager;
 import moonlit.chill.ownpay.cache.TradeConfigDataCache;
 import moonlit.chill.ownpay.cache.TradeMappingsDataCache;
 import moonlit.chill.ownpay.cache.WaitingPayCache;
@@ -63,7 +65,7 @@ public class PayServiceImpl implements PayService {
                 result = payStrategy.payMethod(param);
                 log.info("发起支付返回:{}", JSONUtil.toJsonStr(param));
                 if (result.isSuccess() || result.getCode().equals(TradeResultCode.PAY_USER_PAYING)){
-                    initiatePaySuccessHandler(result, param);
+                    AsyncFactoryManager.me().execute(AsyncFactory.initiatePaySuccessHandler(result, param));
                     return result.isSuccess() ? result.getTradeResult().toString() : "";
                 } else {
                     throw new PayException(result.getMessage());
@@ -77,18 +79,6 @@ public class PayServiceImpl implements PayService {
         } finally {
             tradeConfigDataCache.remove();
         }
-    }
-
-    private <T extends TradeParam> void initiatePaySuccessHandler(TradeResult<?> result, T param) {
-        param.setTransNum(result.getTransNum());
-        if (result.isNeedSearch()){
-            PaySearchParam searchParam = new PaySearchParam();
-            searchParam.setStartTime(System.currentTimeMillis());
-            searchParam.setPaySearchRule(PaySearchRule.LEVEL_1);
-            param.setSearchParam(searchParam);
-            waitingPayCache.offer(param, System.currentTimeMillis() + PaySearchRule.LEVEL_1.getIntervalTime() * 1000L);
-        }
-        //TODO 业务处理
     }
 
     private <T extends TradeParam> void paramHandler(T param) {

@@ -25,6 +25,9 @@ public class TradeResult<T> implements Serializable {
 
     private Integer code = TradeResultCode.PAY_FAIL_CODE;
 
+    /** 接口同步返回订单支付成功 */
+    private boolean sync = Boolean.FALSE;
+
     private Exception exception;
 
     /** 我方交易号 */

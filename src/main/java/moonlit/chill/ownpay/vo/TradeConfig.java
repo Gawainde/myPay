@@ -35,6 +35,9 @@ public class TradeConfig {
     /** 微信V3密钥 */
     private String key;
 
+    /** 微信V2密钥 */
+    private String v2Key;
+
     /** 私钥 */
     private String privateKey;
 

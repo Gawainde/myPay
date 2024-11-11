@@ -2,6 +2,8 @@ package moonlit.chill.ownpay.async.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
+import moonlit.chill.ownpay.async.AsyncFactory;
+import moonlit.chill.ownpay.async.AsyncFactoryManager;
 import moonlit.chill.ownpay.async.service.AsyncServiceForPay;
 import moonlit.chill.ownpay.cache.TradeConfigDataCache;
 import moonlit.chill.ownpay.cache.TradeMappingsDataCache;
@@ -54,7 +56,7 @@ public class AsyncServiceForPayImpl implements AsyncServiceForPay {
                 if (payStrategy != null) {
                     TradeResult<?> result = payStrategy.payForPayQuery(param);
                     if (result.isSuccess()) {
-                        //TODO 异步通知支付成功
+                        AsyncFactoryManager.me().execute(AsyncFactory.querySuccess(result, param));
                     } else {
                         offer(param);
                     }

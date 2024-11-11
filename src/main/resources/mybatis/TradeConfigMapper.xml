@@ -20,6 +20,7 @@
         <result property="miniAppId" column="mini_app_id"/>
         <result property="appAuthToken" column="app_auth_token"/>
         <result property="key" column="key"/>
+        <result property="v2Key" column="v2Key"/>
     </resultMap>
 
     <select id="getTradeConfig" resultType="moonlit.chill.ownpay.vo.TradeConfig">
