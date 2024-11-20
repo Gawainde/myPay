@@ -29,4 +29,13 @@ public class TradeResultResponse {
 
     /** 交易时间 */
     private Date tradeTime;
+
+    /** 退款金额 */
+    private BigDecimal refundAmount;
+
+    /** 我方退款单号 */
+    private String refundNo;
+
+    /** 三方退款单号 */
+    private String outRefundNo;
 }

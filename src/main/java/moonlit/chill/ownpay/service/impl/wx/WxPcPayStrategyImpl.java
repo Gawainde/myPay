@@ -49,7 +49,7 @@ public class WxPcPayStrategyImpl implements PayStrategy {
     }
 
     @Override
-    public <T extends TradeParam> TradeResult<?> payMethod(T param) {
+    public <T extends TradeParam> TradeResult<?> tradeMethod(T param) {
         log.info(String.format("微信主扫入参:%s", JSONUtil.toJsonStr(param)));
         TradeResult<String> result = new TradeResult<>();
         try {

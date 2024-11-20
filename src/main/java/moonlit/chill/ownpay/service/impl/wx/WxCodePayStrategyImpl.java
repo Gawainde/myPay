@@ -64,7 +64,7 @@ public class WxCodePayStrategyImpl implements PayStrategy {
     private static final String SYSTEM_ERROR = "SYSTEMERROR";
 
     @Override
-    public <T extends TradeParam> TradeResult<?> payMethod(T param) {
+    public <T extends TradeParam> TradeResult<?> tradeMethod(T param) {
         log.info(String.format("微信付款码支付参数:%s", JSONUtil.toJsonStr(param)));
         TradeResult<TradeResultResponse> result = new TradeResult<>();
         TradeResultResponse tradeResultResponse = new TradeResultResponse();

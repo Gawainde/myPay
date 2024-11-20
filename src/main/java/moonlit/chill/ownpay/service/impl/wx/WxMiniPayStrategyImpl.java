@@ -50,7 +50,7 @@ public class WxMiniPayStrategyImpl implements PayStrategy {
 
 
     @Override
-    public <T extends TradeParam> TradeResult<?> payMethod(T param) {
+    public <T extends TradeParam> TradeResult<?> tradeMethod(T param) {
         log.info(String.format("微信小程序支付参数:%s", JSONUtil.toJsonStr(param)));
         TradeResult<String> result = new TradeResult<>();
         try {

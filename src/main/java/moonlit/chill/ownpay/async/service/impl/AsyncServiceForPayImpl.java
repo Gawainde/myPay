@@ -54,7 +54,7 @@ public class AsyncServiceForPayImpl implements AsyncServiceForPay {
                 tradeConfigDataCache.setCode(code);
                 PayStrategy payStrategy = payFactory.getPayStrategy(param.getPayType() + PayStrategySuffix.QUERY);
                 if (payStrategy != null) {
-                    TradeResult<?> result = payStrategy.payForPayQuery(param);
+                    TradeResult<?> result = payStrategy.tradeQuery(param);
                     if (result.isSuccess()) {
                         AsyncFactoryManager.me().execute(AsyncFactory.querySuccess(result, param));
                     } else {

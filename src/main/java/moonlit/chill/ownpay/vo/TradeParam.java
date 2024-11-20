@@ -38,7 +38,7 @@ public class TradeParam {
     private BigDecimal totalAmount;
 
     /** 退款金额 */
-    private BigDecimal refundFee;
+    private BigDecimal refundAmount;
 
     /** 支付超时时间 */
     private Date payDeadLine;

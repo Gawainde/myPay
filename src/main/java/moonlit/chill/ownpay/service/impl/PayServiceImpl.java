@@ -14,8 +14,6 @@ import moonlit.chill.ownpay.exception.PayException;
 import moonlit.chill.ownpay.service.PayService;
 import moonlit.chill.ownpay.service.PayStrategy;
 import moonlit.chill.ownpay.vo.TradeResult;
-import moonlit.chill.ownpay.vo.PaySearchParam;
-import moonlit.chill.ownpay.vo.PaySearchRule;
 import moonlit.chill.ownpay.vo.TradeParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +60,7 @@ public class PayServiceImpl implements PayService {
                 }
                 tradeConfigDataCache.setCode(code);
                 log.info("调用支付入参:{}", JSONUtil.toJsonStr(result));
-                result = payStrategy.payMethod(param);
+                result = payStrategy.tradeMethod(param);
                 log.info("发起支付返回:{}", JSONUtil.toJsonStr(param));
                 if (result.isSuccess() || result.getCode().equals(TradeResultCode.PAY_USER_PAYING)){
                     AsyncFactoryManager.me().execute(AsyncFactory.initiatePaySuccessHandler(result, param));
