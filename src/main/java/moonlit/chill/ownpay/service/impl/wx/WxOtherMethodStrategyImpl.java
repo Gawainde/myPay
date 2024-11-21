@@ -7,6 +7,7 @@ import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
+import com.wechat.pay.java.core.RSAPublicKeyConfig;
 import com.wechat.pay.java.core.http.AbstractHttpClient;
 import com.wechat.pay.java.core.http.DefaultHttpClientBuilder;
 import com.wechat.pay.java.core.notification.NotificationConfig;
@@ -80,6 +81,11 @@ public class WxOtherMethodStrategyImpl implements PayStrategy {
             String wechatTimestamp = request.getHeader("Wechatpay-Timestamp");
             String wechatSignature = request.getHeader("Wechatpay-Signature");
             log.info("微信异步回调serialNo：{}，nonce：{}，timestamp：{}，signature：{}", wechatPaySerial, wechatpayNonce, wechatTimestamp, wechatSignature);
+            if (!wechatPaySerial.equals(tradeConfig.getPublicKeyId())){
+                log.info("微信异步回调验签失败");
+                result.error("验签失败", TradeResultCode.PAY_FAIL_CODE);
+                return result;
+            }
             StringBuilder builder = new StringBuilder();
             ServletInputStream inputStream = request.getInputStream();
             reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -98,10 +104,12 @@ public class WxOtherMethodStrategyImpl implements PayStrategy {
                     .body(reqBody)
                     .build();
             log.info("微信异步回调密文 {}", requestParam);
-            NotificationConfig config = new RSAAutoCertificateConfig.Builder()
+            NotificationConfig config = new RSAPublicKeyConfig.Builder()
                     .merchantId(tradeConfig.getUId())
-                    .privateKeyFromPath(configMap.get(tradeConfig.getCode() + "_keyCertPath").toString())
-                    .merchantSerialNumber(WxCertUtil.getCertificateSerialNumber(configMap.get(tradeConfig.getCode() + "_certPath").toString()))
+                    .privateKeyFromPath(configMap.get(tradeConfig.getCode() + "_apiclient_key.pem").toString())
+                    .publicKeyFromPath(configMap.get(tradeConfig.getCode() + "_pub_key.pem").toString())
+                    .publicKeyId(tradeConfig.getPublicKeyId())
+                    .merchantSerialNumber(WxCertUtil.getCertificateSerialNumber(configMap.get(tradeConfig.getCode() + "_apiclient_cert.pem").toString()))
                     .apiV3Key(tradeConfig.getKey())
                     .build();
             NotificationParser parser = new NotificationParser(config);
