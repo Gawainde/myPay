@@ -25,7 +25,7 @@
         <druid.version>1.2.4</druid.version>
         <hutool-all>5.8.25</hutool-all>
         <httpclient>5.2.1</httpclient>
-        <wechatpay>0.2.12</wechatpay>
+        <wechatpay>0.2.15</wechatpay>
         <lombok>1.18.28</lombok>
         <org.apache.commons>1.20</org.apache.commons>
         <org.apache.commons.jexl3>3.0</org.apache.commons.jexl3>

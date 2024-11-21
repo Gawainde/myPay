@@ -3,7 +3,9 @@ package moonlit.chill.ownpay.util;
 import cn.hutool.core.io.FileUtil;
 import com.alipay.api.CertAlipayRequest;
 import com.alipay.api.DefaultAlipayClient;
+import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
+import com.wechat.pay.java.core.RSAPublicKeyConfig;
 import lombok.extern.slf4j.Slf4j;
 import moonlit.chill.ownpay.cache.TradeConfigDataCache;
 import moonlit.chill.ownpay.constants.PayType;
@@ -62,13 +64,15 @@ public class TradeUtil {
                     //微信异步回调使用
                     map.put(config.getCode() + "_" + cert.getCertName(), certPath);
                 }
-                RSAAutoCertificateConfig certificateConfig = new RSAAutoCertificateConfig.Builder()
+                Config wxConfig = new RSAPublicKeyConfig.Builder()
                         .merchantId(config.getUId())
                         .privateKeyFromPath(map.get(config.getCode() + "_apiclient_key.pem").toString())
+                        .publicKeyFromPath(map.get(config.getCode() + "_pub_key.pem").toString())
+                        .publicKeyId(config.getPublicKeyId())
                         .merchantSerialNumber(WxCertUtil.getCertificateSerialNumber( pre + "apiclient_cert.pem"))
                         .apiV3Key(config.getKey())
                         .build();
-                map.put(config.getCode(), certificateConfig);
+                map.put(config.getCode(), wxConfig);
             }
         } catch (Exception e) {
             log.error("生成微信配置异常");

@@ -59,6 +59,12 @@ public class TradeConfig {
     /** 备注 */
     private String remark;
 
+    /** 微信公钥ID */
+    private String publicKeyId;
+
+    /** 微信公钥证书 */
+    private String publicKeyCert;
+
     /** 证书 */
     private List<TradeCert> certs;
 
