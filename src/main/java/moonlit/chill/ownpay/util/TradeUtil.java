@@ -64,15 +64,15 @@ public class TradeUtil {
                     //微信异步回调使用
                     map.put(config.getCode() + "_" + cert.getCertName(), certPath);
                 }
-                Config wxConfig = new RSAPublicKeyConfig.Builder()
-                        .merchantId(config.getUId())
-                        .privateKeyFromPath(map.get(config.getCode() + "_apiclient_key.pem").toString())
-                        .publicKeyFromPath(map.get(config.getCode() + "_pub_key.pem").toString())
-                        .publicKeyId(config.getPublicKeyId())
-                        .merchantSerialNumber(WxCertUtil.getCertificateSerialNumber( pre + "apiclient_cert.pem"))
-                        .apiV3Key(config.getKey())
-                        .build();
-                map.put(config.getCode(), wxConfig);
+//                Config wxConfig = new RSAPublicKeyConfig.Builder()
+//                        .merchantId(config.getUId())
+//                        .privateKeyFromPath(map.get(config.getCode() + "_apiclient_key.pem").toString())
+//                        .publicKeyFromPath(map.get(config.getCode() + "_pub_key.pem").toString())
+//                        .publicKeyId(config.getPublicKeyId())
+//                        .merchantSerialNumber(WxCertUtil.getCertificateSerialNumber( pre + "apiclient_cert.pem"))
+//                        .apiV3Key(config.getKey())
+//                        .build();
+//                map.put(config.getCode(), wxConfig);
             }
         } catch (Exception e) {
             log.error("生成微信配置异常");
@@ -88,7 +88,7 @@ public class TradeUtil {
             List<TradeConfig> list = tradeConfigDataCache.getTradeConfigByPayType(PayType.ALI);
             if (list.isEmpty()) {
                 log.error("生成支付宝证书获取TradeConfig为空");
-                throw new RuntimeException("生成支付宝证书失败");
+                //throw new RuntimeException("生成支付宝证书失败");
             }
             for (TradeConfig config : list) {
                 String pre = System.getProperty("user.dir") + SEPARATOR + "aliCert" + SEPARATOR + config.getUId() + SEPARATOR;
@@ -103,17 +103,17 @@ public class TradeUtil {
                         }
                     }
                 }
-                CertAlipayRequest certAlipayRequest = new CertAlipayRequest();
-                certAlipayRequest.setServerUrl(SERVER_URL);
-                certAlipayRequest.setAppId(config.getAppId());
-                certAlipayRequest.setPrivateKey(config.getPrivateKey());
-                certAlipayRequest.setFormat("json");
-                certAlipayRequest.setCharset("utf-8");
-                certAlipayRequest.setSignType("RSA2");
-                certAlipayRequest.setCertPath(pre + "appCertPublicKey.crt");
-                certAlipayRequest.setAlipayPublicCertPath(pre + "aliCertPublicKey.crt");
-                certAlipayRequest.setRootCertPath(pre + "alipayRootCert.crt");
-                map.put(config.getCode(), new DefaultAlipayClient(certAlipayRequest));
+//                CertAlipayRequest certAlipayRequest = new CertAlipayRequest();
+//                certAlipayRequest.setServerUrl(SERVER_URL);
+//                certAlipayRequest.setAppId(config.getAppId());
+//                certAlipayRequest.setPrivateKey(config.getPrivateKey());
+//                certAlipayRequest.setFormat("json");
+//                certAlipayRequest.setCharset("utf-8");
+//                certAlipayRequest.setSignType("RSA2");
+//                certAlipayRequest.setCertPath(pre + "appCertPublicKey.crt");
+//                certAlipayRequest.setAlipayPublicCertPath(pre + "aliCertPublicKey.crt");
+//                certAlipayRequest.setRootCertPath(pre + "alipayRootCert.crt");
+//                map.put(config.getCode(), new DefaultAlipayClient(certAlipayRequest));
                 map.put(config.getCode() + "_aliPayCertPath", pre + "aliCertPublicKey.crt");
             }
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package moonlit.chill.ownpay.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.List;
@@ -67,5 +68,8 @@ public class TradeConfig {
 
     /** 证书 */
     private List<TradeCert> certs;
+
+    @JsonIgnore
+    private String tradeCert;
 
 }

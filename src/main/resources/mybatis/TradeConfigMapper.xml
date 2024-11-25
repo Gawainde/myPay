@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="moonlit.chill.ownpay.mapper.TradeConfigMapper">
 
-    <resultMap type="moonlit.chill.ownpay.vo.TradeConfig" id="PayConfigResult">
+    <resultMap type="moonlit.chill.ownpay.vo.TradeConfig" id="TradeConfigResult">
         <result property="id" column="id"/>
         <result property="payType" column="pay_type"/>
         <result property="appId" column="app_id"/>
@@ -33,7 +33,7 @@
     </select>
     <select id="selectByPayType" resultType="moonlit.chill.ownpay.vo.TradeConfig">
         select tc.*,
-               JSON_ARRAYAGG(JSON_OBJECT('certFileContent', t.cert_file_content , 'certName', t.cert_name)) as certs
+               JSON_ARRAYAGG(JSON_OBJECT('certFileContent', t.cert_file_content , 'certName', t.cert_name)) as tradeCert
         from trade_config as tc
         left join trade_cert as t on tc.code = t.config_code
         where tc.status = 1
